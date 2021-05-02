@@ -25,7 +25,7 @@ main(int argc, char *argv[])
         exit(EXIT_FAILURE);
     }
 
-    fd = open(argv[1], O_RDONLY);
+    fd = open(argv[1], O_RDWR);
     if (fd == -1)
         handle_error("open");
 
@@ -51,8 +51,8 @@ main(int argc, char *argv[])
         length = sb.st_size - offset;
     }
 
-    addr = mmap(NULL, length + offset - pa_offset, PROT_READ,
-                MAP_PRIVATE, fd, pa_offset);
+    addr = mmap(NULL, length + offset - pa_offset, PROT_READ | PROT_WRITE,
+                MAP_SHARED, fd, pa_offset);
     if (addr == MAP_FAILED)
         handle_error("mmap");
 
